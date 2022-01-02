@@ -1,0 +1,85 @@
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<div class="row">
+  <div class="col-6">
+   
+     <label>Source language :</label>
+     <select id="source" class="form-control">
+      <option value="">--select--</option>
+     </select>
+     <br/>
+     <textarea id="source_text"  rows="10" cols="50"></textarea>
+       <br><br><br>
+  </div>
+  <div class="col-6">
+   <label>Dest language :</label>
+   <select id="dest" class="form-control">
+    <option value="">--select--</option>
+   </select>
+     <br/>
+    <textarea id="dest_text"  rows="10" cols="50"></textarea>
+      <br><br><br>
+  </div>
+     <div class="col-4"></div>
+     <div class="col-4">
+      <button class="btn btn-outline-danger btn-block" onclick="resettext()" >Reset Text</button>
+      <button class="btn btn-outline-success btn-block" onclick="translate()">Translate</button>
+     </div> 
+</div>
+
+<script>
+    var source = document.getElementById("source")
+    var dest = document.getElementById("dest")
+
+    
+    
+   axios.get('https://libretranslate.de/languages', { headers: { 'accept': 'application/json' } })
+        .then(res => {
+            res.data.map(lang => {
+                 var opt = document.createElement("option")
+                 opt.value = lang.code
+                 opt.innerHTML = lang.name
+                 source.appendChild(opt)
+                
+                 opt = document.createElement("option")
+                 opt.value = lang.code
+                 opt.innerHTML = lang.name
+                 dest.appendChild(opt) 
+            })
+        }).
+        catch(err => alert(err))
+    
+    function resettext(){
+       var source_texta =  document.getElementById("source_text")
+       var dest_texta =  document.getElementById("dest_text")
+        source_texta.value = ""
+        dest_texta.value = ""
+    }
+
+    function translate(){
+      
+       var source_texta =  document.getElementById("source_text")
+       var dest_texta =  document.getElementById("dest_text")
+      if(source.value =="" ){
+          alert("Please select Source language")
+      }
+      else if(dest.value == ""){
+         alert("Please select Dest language")
+      }
+      else{
+        let data = {
+        q: source_texta.value,
+        source: source.value,
+        target: dest.value
+      }
+         
+          
+      axios.post(`https://libretranslate.de/translate`, data)
+        .then((response) => {
+           dest_texta.value = response.data.translatedText 
+        })
+      }
+      
+    }
+   
+</script>

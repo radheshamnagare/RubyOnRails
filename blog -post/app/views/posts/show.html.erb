@@ -1,0 +1,110 @@
+
+<div class="container">
+    
+
+  <div class="card" >
+   <div  class="card-header" style="background-image: url(<%= @post.template.attached? ?rails_blob_path(@post.template) : asset_path("default.jpg") %>)" >
+    
+
+    <% @profiles.where(:user_id=> @post.user_id).each do |profile|%>
+                
+                     <%if profile.profile_photo.attached?%>
+                      <%= image_tag(profile.profile_photo,class:"rounded-circle",width:"100px",height:"100px") %>
+                       <%profile_id=profile.id%>
+                     <%else%>
+                          <%= image_tag(asset_path("default_profile.png"),class:"rounded-circle",width:"100px",height:"100px") %>
+                     <%end%>  
+                     <br /><br/>
+                       
+                   <p class="text-capitalize font-weight-bold">
+                            <%= profile.first_name+" "+profile.last_name%>
+                   </p>
+                <%end%>  
+    
+
+     <br/>
+    
+    <h2 class="text-capitalize"><strong><%= @post.title %></strong></h2>
+   </div> 
+  <br/>
+  <div class="card-body ">
+  <%= @post.post_body %>
+  </div>
+  <div class="card-footer">
+     <% like = current_user.likes.find_by(post: @post) %>
+     <% if current_user.likes.find_by(post: @post).nil? %>
+     
+       <form action="/likes" method="post">
+           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"  > 
+         <input type="hidden" name="like[post_id]" value="<%= @post.id %>">
+         <button type="submit" class="btn btn-outline-success btn-sm ">like</button>
+       </form>
+      <%else%>
+      <form action="<%= like_path(like)%>" method="post">
+           <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"  > 
+         <input type="hidden" name="_method" value="DELETE">
+         <button type="submit" class="btn btn-outline-danger btn-sm">unlike</button>
+       </form>
+     <%end%>
+     <br/>
+      <%= render partial: "comments/form",locals: {post: @post} %>
+       <table class="table">
+         <td class="text text-primary">
+          Post by: <%= @post.user.email%>
+         </td>
+         <td class="text text-primary">
+         Create at: <%= time_ago_in_words(@post.created_at )+" ago"%>  
+         </td>  
+         <td class="text text-primary">
+           Last by: <%= time_ago_in_words(@post.updated_at)+" ago"%>  
+         </td>
+         <td class="text text-primary">
+          Likes: <%= @post.likes.count()%> 
+         </td>
+          <td>
+           <a class="btn btn-link " data-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapseExample">
+           Comments <%= @post.comments.count() %>
+           </a>
+         </td>
+        </table>
+         <div class="collapse" id="collapse">
+                            <table class="table table-bordered">
+                                <% @post.comments.includes(:user).order(created_at: :desc).each do |comment|%>
+                                   
+                                    <tr>
+                                        <td>
+                                            <%= comment.content%>
+                                        </td>
+                                        <td> <small> 
+                                            <%has_profile = false%>
+                                            <%@profiles.where(:user_id=> comment.user_id).each do |prof|%>
+                                              <%=link_to "by "+comment.user.email,profile_path(prof.id)%>
+                                              <%has_profile = true%>
+                                             <%end%> 
+                                             <%if has_profile == false%>
+                                                 <%= "by "+comment.user.email%>
+                                             <%end%>
+
+                                        </small></td>
+                                        <td>
+                                            <%= time_ago_in_words(@post.created_at )+" ago" %>
+                                        </td>
+                                        <td>
+                                            <%if current_user.id==comment.user_id%>
+                                                <%= link_to 'delete' , [comment.post,comment], method: :delete, data: {
+                                                    confirm: 'Are you sure?' } ,class:"btn btn-link"%>
+                                                    <%end%>
+                                        </td>
+                                    </tr>
+                                    <%end%>
+                            </table>
+                        </div>
+        </div>
+  </div>
+ <br/><br/>
+  <%= link_to 'Edit', edit_post_path(@post) ,class:"btn btn-dark btn-sm"%> 
+  <%= link_to 'Back', posts_path ,class:"btn btn-dark btn-sm "%>
+  <br/><br/>
+</div>
+
+</div>

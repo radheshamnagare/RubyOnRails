@@ -1,0 +1,54 @@
+<div class="row">
+<div class="col-8">
+<%= form_with(model: friend) do |form| %>
+  <% if friend.errors.any? %>
+    <div id="error_explanation">
+     <div class="alert alert-warning alert-dismissible fade show" role="alert">
+  <ul>
+        <% friend.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+     
+    </div>
+  <% end %>
+
+
+
+  <div class="field form-group">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name ,class:"form-control ",placeholder:"first_name" ,width:"100"%>
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name, class:"form-control",placeholder:"last_name"%>
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :email %>
+    <%= form.text_field :email, class:"form-control",placeholder:"email"%>
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :phone %>
+    <%= form.text_field :phone, class:"form-control",placeholder:"phone"%>
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :twitter %>
+    <%= form.text_field :twitter, class:"form-control",placeholder:"twitter"%>
+  </div>
+
+  <div class="field form-group">
+    <%= form.number_field :user_id,id: :friend_user_id, class:"form-control",placeholder:"User Id",value:current_user.id,type: :hidden %>
+  </div>
+    <%= form.submit class:"btn- btn-dark btn-sm" %>
+  
+<% end %>
+</div>
+</div>

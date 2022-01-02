@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="card">
+  <br/>
+   <div class="card-body">
+     <h1>Editing Profile</h1>
+      <%= render 'form', profile: @profile %>
+   </div>
+  
+ </div>
+ <br/><br/>
+<%= link_to 'Show', @profile ,class:"btn btn-dark btn-sm"%> 
+<%= link_to 'Back', profiles_path ,class:"btn btn-dark btn-sm"%>
+<br/><br/>
+</div>

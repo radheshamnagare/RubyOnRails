@@ -1,0 +1,10 @@
+<form action="<%= post_comments_path(post)%>" method="post">
+  <div class="form-group">
+
+    <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>"  > 
+    <textarea name="comment[content]" id="" rows="1" cols="10" class="form-control"></textarea>
+    <br/>
+     <input type="submit" value="Post" class="btn btn-outline-success btn-sm"> 
+     <input type="reset" value="Reset" class="btn btn-outline-danger btn-sm"> 
+  </div>
+</form>

@@ -1,0 +1,35 @@
+<div class="container">
+<div class="jumbotron">
+  <h1 class="display-4 text-capitalize font-italic"><%= @profile.first_name %>  <%= @profile.last_name %></h1>
+ 
+  <hr class="my-4">
+   <table class="table">
+    <td>
+    <%if @profile.profile_photo.attached?%>
+     <%= image_tag(@profile.profile_photo ,class:"rounded" ,width:"200px",height:"200px") %>
+     <br/><br/>
+     <%= link_to "Remove", delete_image_attachment_profile_path(@profile),data: {confirm: 'Are you sure ?'},method: :delete,class:"btn btn-danger btn-sm "%>
+    <%else%>
+          <%= image_tag(asset_path("default_profile.png"),class:"rounded-circle",width:"200px",height:"200px") %>
+    <%end%> 
+    </td>
+    <td>
+       <p><%= @profile.about_profile %></p>
+       <ul class=" font-italic"  >
+        <li> Email: <%= current_user.email%> </li>
+        <li> Contact: <%= @profile.contact%> </li>
+       </ul> 
+     </td>
+   </table>
+</div>
+<br/><br/>
+<%if current_user.id == @profile.user_id%>
+<%= link_to 'Edit', edit_profile_path(@profile) ,class:"btn btn-dark btn-sm"%> 
+<%end%>
+
+<%= link_to 'Back', profiles_path, class:"btn btn-dark btn-sm"%>
+
+<%= link_to 'Back_to_Posts', posts_path, class:"btn btn-dark btn-sm"%>
+<br/><br/>
+</div>
+

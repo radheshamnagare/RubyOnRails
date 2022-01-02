@@ -1,0 +1,57 @@
+
+<%= form_with(model: profile) do |form| %>
+  <% if profile.errors.any? %>
+ 
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <ul>
+        <% profile.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+  <% end %>
+
+
+
+
+
+  <div class="field form-group">
+    <%= form.label :first_name %>
+    <%= form.text_field :first_name ,class:"form-control" %>
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :last_name %>
+    <%= form.text_field :last_name ,class:"form-control"%>
+  </div>
+
+   <div class="field form-group">
+    <%= form.label :contact %>
+    <%= form.text_field :contact ,class:"form-control"%>
+  </div>
+        
+
+   <div class="field form-group">
+    <%= form.label  :about_profile %><small> (put your bio)</small>
+    <%= form.rich_text_area  :about_profile,class:"form-control"%>
+  </div>
+
+  <div class="field form-group">
+    <%= form.label :profile_photo %>
+    <%= form.file_field :profile_photo ,class:"form-control"%>
+  </div>
+
+  <div class="field">
+    <%= form.number_field :user_id,id: :profile_user_id ,value:current_user.id ,type: :hidden%>
+  </div>
+
+  <br/>
+  <div class="actions">
+    <%= form.submit class:"btn btn-outline-success btn-sm"%>
+  </div>
+  <br/>
+<% end %>
